@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>CRUD Application</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>CRUD Application</h1>
+        <div id="user-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination">
+            <span class="step-links">
+                
+            </span>
+        </div>
+
+
+        <div id="crud-actions">
+            <button id="get-button">GET</button>
+            <button id="post-button">POST</button>
+            <button id="put-button">PUT</button>
+            <button id="delete-button">DELETE</button>
+            <a href="{% url 'request-logs' %}" id="logs-button">Logs</a>
+        </div>
+        <div id="request-section">
+            <h3>Request Section</h3>
+
+            <!-- GET Opereation -->
+            <div id="get-input" style="display: none;">
+                <input type="text" id="get-user-id" placeholder="Enter User ID">
+                <button id="get-user-details">Get User Details</button>
+            </div>
+
+            <!-- POST Operation -->
+             <div id="post-form" style="display: none;">
+                <form id="add-user-form">
+                    {% csrf_token %}
+                    <input type="text" id="first-name" name="first_name" placeholder="First Name">
+                    <input type="text" id="last-name" name="last_name" placeholder="Last Name">
+                    <input type="email" id="email" name="email" placeholder="Email">
+                    <input type="number" id="phone-number" name="phone_number" placeholder="Phone Number">
+                    <input type="date" id="date-of-birth" name="date_of_birth" placeholder="Date of Birth">
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+
+            <!-- PUT Operation -->
+            <div id="put-form" style="display: none;">
+                <form id="update-user-form" method="put">
+                    {% csrf_token %}
+                    <input type="text" id="put-user-id" name="put_user_id" placeholder="User ID to Update">
+                    <input type="text" id="put_first_name" name="put_first_name" placeholder="First Name">
+                    <input type="text" id="put_last_name" name="put_last_name" placeholder="Last Name">
+                    <input type="email" id="put_email" name="put_email" placeholder="Email">
+                    <input type="number" id="put_phone_number" name="put_phone_number" placeholder="Phone Number">
+                    <input type="date" id="put_date_of_birth" name="put_date_of_birth" placeholder="Date of Birth">
+                    <button type="submit">Update User</button>
+                </form>
+            </div>
+
+
+            <!-- DELETE Operation -->
+            <div id="delete-input" style="display: none;">
+                <form method="delete">
+                    {% csrf_token %}
+                    <input type="text" id="delete-user-id" name="delete_user_id" placeholder="Enter User ID">
+                    <button id="submit-delete-id">Submit</button>
+                </form>
+            </div>
+            
+            <div id="delete-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>Are you sure you want to delete this user?</p>
+                    <button id="confirm-delete-button">Yes</button>
+                    <button id="cancel-delete-button">No</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="response-section">
+            <h3>Response Section</h3>
+        </div>
+        
+    </div>
+    <script src="../static/js/get_script.js"></script>
+    <script src="../static/js/post_script.js"></script>
+    <script src="../static/js/put_script.js"></script>
+    <script src="../static/js/delete_script.js"></script>
+    <script src="../static/js/get_all_users.js"></script>
+
+    <script>
+        $(document).ready(function () {
+        
+        $("#logs-button").click(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('href'), 
+                type: 'get',
+                dataType: 'html',
+                success: function (data) {
+                    $("body").html(data);
+                },
+                error: function () {
+                    alert('Error fetching logs page');
+                }
+            });
+        });
+    });
+    </script>
+
+</body>
+</html>
